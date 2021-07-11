@@ -85,6 +85,7 @@ const usuariosPost= async (req, res)=> {
 const usuariosDelete= async(req, res)=> {
     const {id} = req.params;
 
+    const usuarioAutenticado= req.usuario;  //viene del validarJWT
     // //OJO: Esto lo borra fisicamente
     // const usuario= await Usuario.findByIdAndDelete(id);
 

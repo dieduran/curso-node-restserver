@@ -20,6 +20,7 @@ const UsuarioSchema= Schema({
     rol: {
         type: String,
         required: [true,'La contraseña es obligatoria'],
+        default: 'USER_ROLE',
         emun :['ADMIN_ROLE','USER_ROLE']
     },
     estado: {
@@ -27,14 +28,15 @@ const UsuarioSchema= Schema({
         default: true
     },
     google: {
-        type: String,
+        type: Boolean,
         default: false
     },
 });
 
-//podems sobreescribir los metodos de mongoose.
+//podemos sobreescribir los metodos de mongoose.
 UsuarioSchema.methods.toJSON = function (){ //no de flecha porque necesito el this
-    const {__v, password, ...usuario }= this.toObject();
+    const {__v, password, _id, ...usuario }= this.toObject();
+    usuario.uid=_id; //con esto utilizo uid para mostrar siempre en lugar de _id
     return usuario;
 
 }

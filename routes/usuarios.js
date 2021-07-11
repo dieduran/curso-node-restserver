@@ -2,7 +2,17 @@ const {Router} = require('express');
 const {check} = require('express-validator')
 
 const { esRoleValido, emailExiste, existeUsuarioPorID } = require('../helpers/db-validators');
-const { validarCampos } = require('../middlewares/validar-campos');
+
+// const { validarCampos } = require('../middlewares/validar-campos');
+// const { validarJWT } = require('../middlewares/validar-jsw');
+// const { esAdminRole, tieneRole } = require('../middlewares/validar-roles');
+//// otra forma de escribirlo
+const {
+        validarCampos,
+        validarJWT,
+        esAdminRole,
+        tieneRole                
+        } = require('../middlewares'); //llama el index
 
 const { usuariosGet, 
         usuariosPut, 
@@ -37,6 +47,9 @@ router.post('/',[
 router.patch('/', usuariosPatch);
 
 router.delete('/:id', [
+        validarJWT,
+        //esAdminRole, //lo cambiamos por la otra funcion
+        tieneRole('ADMIN_ROLE'),
         check('id', 'No es un ID válido').isMongoId(),
         check('id').custom(existeUsuarioPorID),
         validarCampos
